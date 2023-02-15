@@ -1,46 +1,14 @@
-import DeviceDetector from "https://cdn.skypack.dev/device-detector-js@2.2.10";
+import { testSupport } from "./testSupport.js";
+
 const mpHands = window;
 const drawingUtils = window;
 const controls = window;
 const controls3d = window;
-const game = document.getElementById("canvas");
-console.log({ game });
-const ds = game.dispatchEvent(new KeyboardEvent("onkeydown", { key: "a" }));
-console.log({ ds });
-game.dispatchEvent(new KeyboardEvent("onkeydown", { key: "a" }));
+const game = document.getElementById("canvas_game");
+const gameCtx = game.getContext("2d");
 
-// Usage: testSupport({client?: string, os?: string}[])
-// Client and os are regular expressions.
-// See: https://cdn.jsdelivr.net/npm/device-detector-js@2.2.10/README.md for
-// legal values for client and os
 testSupport([{ client: "Chrome" }]);
-function testSupport(supportedDevices) {
-  const deviceDetector = new DeviceDetector();
-  const detectedDevice = deviceDetector.parse(navigator.userAgent);
-  let isSupported = false;
-  for (const device of supportedDevices) {
-    if (device.client !== undefined) {
-      const re = new RegExp(`^${device.client}$`);
-      if (!re.test(detectedDevice.client.name)) {
-        continue;
-      }
-    }
-    if (device.os !== undefined) {
-      const re = new RegExp(`^${device.os}$`);
-      if (!re.test(detectedDevice.os.name)) {
-        continue;
-      }
-    }
-    isSupported = true;
-    break;
-  }
-  if (!isSupported) {
-    alert(
-      `This demo, running on ${detectedDevice.client.name}/${detectedDevice.os.name}, ` +
-        `is not well supported at this time, continue at your own risk.`
-    );
-  }
-}
+
 // Our input frames will come from here.
 const videoElement = document.getElementsByClassName("input_video")[0];
 const canvasElement = document.getElementsByClassName("output_canvas")[0];
@@ -117,25 +85,43 @@ function onResults(results) {
       /*       canvasCtx.save(); */
 
       //calcute distance between two points
-      const x1 = landmarks[0].x * canvasElement.width;
-      const y1 = landmarks[0].y * canvasElement.height;
-      const x2 = landmarks[12].x * canvasElement.width;
-      const y2 = landmarks[12].y * canvasElement.height;
+      const x1 = landmarks[0].x * 100;
+      const y1 = landmarks[0].y * 100;
+      const x2 = landmarks[12].x * 100;
+      const y2 = landmarks[12].y * 100;
       const distance = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
-      if (distance < 70) {
+      console.log(distance);
+      if (distance < 12) {
         /* document.dispatchEvent(new KeyboardEvent("keydown", { key: "a" })); */
 
-        let eventKeyboar = new KeyboardEvent("keydown", { keyCode: 65 });
-        document.dispatchEvent(eventKeyboar);
-
-        console.log("hold");
-      } else if (distance > 100) {
-        let eventKeyboar = new KeyboardEvent("keyup", { keyCode: 65 });
-        document.dispatchEvent(eventKeyboar);
+        let eventKeyboar = new KeyboardEvent("keydown", { key: " " });
+        game.focus();
+        game.dispatchEvent(eventKeyboar);
+        gameCtx.clearRect(0, 0, game.width, game.height);
+        gameCtx.font = "50px Arial white";
+        gameCtx.fillStyle = "blue";
+        gameCtx.fillText("jump", 10, 50);
 
         console.log("jump");
-      } else {
+      } else if (distance > 35) {
+        game.focus();
+        gameCtx.clearRect(0, 0, game.width, game.height);
+        gameCtx.font = "50px Arial white";
+        gameCtx.fillStyle = "red";
+        gameCtx.fillText("stay", 10, 70);
+
+        let eventKeyboar = new KeyboardEvent("keyup", { keyCode: 65 });
+        game.dispatchEvent(eventKeyboar);
+
         console.log("stay");
+      } else {
+        game.focus();
+        gameCtx.clearRect(0, 0, game.width, game.height);
+        gameCtx.font = "50px Arial white";
+        gameCtx.fillStyle = "white";
+        gameCtx.fillText("hold", 10, 90);
+
+        console.log("hold");
       }
 
       drawingUtils.drawConnectors(
@@ -187,8 +173,8 @@ hands.onResults(onResults);
 // options.
 new controls.ControlPanel(controlsElement, {
   selfieMode: true,
-  maxNumHands: 2,
-  modelComplexity: 1,
+  maxNumHands: 1,
+  modelComplexity: 0,
   minDetectionConfidence: 0.5,
   minTrackingConfidence: 0.5,
 })

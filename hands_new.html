@@ -89,7 +89,7 @@
     />
   </head>
 
-  <body display="flex" style="background-color: black">
+  <body style="background-color: black">
     <style>
       .square-box {
         width: 20%;
@@ -109,37 +109,31 @@
         background-color: black;
       }
     </style>
-    <div id="canvas" style="width: 720px"></div>
-    <div class="container" style="width: 720px; height: 520px" display="flex">
-      <video class="input_video"></video>
-      <canvas class="output_canvas" width="1280px" height="1280px"></canvas>
-      <div class="loading">
-        <div class="spinner"></div>
-        <div class="message">Loading</div>
+
+    <div style="display: flex">
+      <div id="canvas" class="game_canvas" width="520px" height="520px"></div>
+
+      <div
+        class="container"
+        width="520px"
+        height="520px"
+        style="background-color: black"
+      >
+        <div display="flex" flex-direction="column">
+          <video class="input_video"></video>
+          <canvas class="output_canvas" width="520px" height="520px"></canvas>
+          <div class="loading">
+            <div class="spinner"></div>
+            <div class="message">Loading</div>
+          </div>
+          <div class="square-box">
+            <div class="landmark-grid-container"></div>
+          </div>
+        </div>
       </div>
-      <!-- <a class="abs logo" href="http://www.mediapipe.dev" target="_blank">
-        <div style="display: flex; align-items: center; bottom: 0; right: 10px">
-          <img
-            class="logo"
-            src="./img/logo_white.png"
-            alt=""
-            style="height: 50px"
-          />
-          <span class="title">MediaPipe</span>
-        </div>
-      </a> -->
-      <!-- <div class="shoutout">
-        <div>
-          <a href="https://solutions.mediapipe.dev/pose" target="_blank">
-            Click here for more info
-          </a>
-        </div>
-      </div> -->
     </div>
+    <canvas id="canvas_game"></canvas>
     <div class="control-panel"></div>
-    <div class="square-box">
-      <div class="landmark-grid-container"></div>
-    </div>
   </body>
 </html>
 
