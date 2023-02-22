@@ -133,16 +133,14 @@ function onResults(results) {
       console.log({ distanceRight, distanceLeft, distanceJump });
 
       if (distanceLeft < 5) {
-        keyReleased(eventKeyboardSpace.key);
-        keyReleased(eventKeyboardLeft.key);
-        keyPressed(eventKeyboardLeft.key);
+        player.rightHeld = true;
         gameCtx.clearRect(0, 0, game.width, game.height);
         gameCtx.font = "50px Arial white";
         gameCtx.fillStyle = "white";
         gameCtx.fillText("left", 10, 50);
         console.log("left");
       } else if (distanceLeft > 5) {
-        keyReleased(eventKeyboardLeft.key);
+        player.rightHeld = false;
         gameCtx.clearRect(0, 0, game.width, game.height);
         gameCtx.font = "50px Arial white";
         gameCtx.fillStyle = "white";
@@ -151,18 +149,15 @@ function onResults(results) {
       }
 
       if (distanceRight < 5) {
-        keyReleased(eventKeyboardSpace.key);
-        keyReleased(eventKeyboardLeft.key);
-        keyPressed(eventKeyboardRight.key);
+        player.leftHeld = true;
         gameCtx.clearRect(0, 0, game.width, game.height);
         gameCtx.font = "50px Arial white";
         gameCtx.fillStyle = "white";
         gameCtx.fillText("right", 10, 50);
         console.log("right");
       } else if (distanceRight > 5) {
-        keyReleased(eventKeyboardSpace.key);
-        keyReleased(eventKeyboardLeft.key);
-        keyReleased(eventKeyboardRight.key);
+        player.leftHeld = false;
+
         gameCtx.clearRect(0, 0, game.width, game.height);
         gameCtx.font = "50px Arial white";
         gameCtx.fillStyle = "white";
@@ -171,10 +166,8 @@ function onResults(results) {
       }
 
       if (distanceJump < 12) {
-        keyReleased(eventKeyboardSpace.key);
-        keyReleased(eventKeyboardLeft.key);
-        keyReleased(eventKeyboardRight.key);
-
+        console.log({ player });
+        player.jumpHeld = true;
         gameCtx.clearRect(0, 0, game.width, game.height);
         gameCtx.font = "50px Arial white";
         gameCtx.fillStyle = "blue";
@@ -187,9 +180,8 @@ function onResults(results) {
         gameCtx.fillText("stay", 10, 70);
         console.log("stay");
       } else {
-        keyReleased(eventKeyboardLeft.key);
-        keyReleased(eventKeyboardRight.key);
-        keyPressed(eventKeyboardSpace.key);
+        player.jumpHeld = false;
+        player.Jump();
         gameCtx.clearRect(0, 0, game.width, game.height);
         gameCtx.font = "50px Arial white";
         gameCtx.fillStyle = "white";
