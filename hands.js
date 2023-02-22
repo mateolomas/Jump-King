@@ -118,29 +118,26 @@ function onResults(results) {
       const x2Left = landmarks[8].x * 100;
       const y2Left = landmarks[8].y * 100;
 
-      const distanceRight = Math.sqrt(
-        (x1Left - x1Left) ** 2 + (x1Jump - y1Jump) ** 2
-      );
-
-      const distanceLeft = Math.sqrt(
-        (x2Left - x1Left) ** 2 + (y2Left - y1Left) ** 2
-      );
+      //calculate angle between two points x1,y1 and x2,y2
+      const angle =
+        (Math.atan2(y1Left - y1Jump, x1Left - x1Jump) * 180) / Math.PI;
+      console.log({ angle });
 
       const distanceJump = Math.sqrt(
         (x2Jump - x1Jump) ** 2 + (y2Jump - y1Jump) ** 2
       );
 
-      console.log({ distanceRight, distanceLeft, distanceJump });
+      console.log({ distanceJump });
 
-      if (distanceLeft < 5) {
-        player.rightHeld = true;
+      if (angle < 10) {
+        player.leftHeld = true;
         gameCtx.clearRect(0, 0, game.width, game.height);
         gameCtx.font = "50px Arial white";
         gameCtx.fillStyle = "white";
         gameCtx.fillText("left", 10, 50);
         console.log("left");
-      } else if (distanceLeft > 5) {
-        player.rightHeld = false;
+      } else if (angle > 10) {
+        player.leftHeld = false;
         gameCtx.clearRect(0, 0, game.width, game.height);
         gameCtx.font = "50px Arial white";
         gameCtx.fillStyle = "white";
@@ -148,16 +145,16 @@ function onResults(results) {
         console.log("left stop");
       }
 
-      if (distanceRight < 5) {
-        player.leftHeld = true;
+      if (angle > 10) {
+        player.rightHeld = true;
+
         gameCtx.clearRect(0, 0, game.width, game.height);
         gameCtx.font = "50px Arial white";
         gameCtx.fillStyle = "white";
         gameCtx.fillText("right", 10, 50);
         console.log("right");
-      } else if (distanceRight > 5) {
-        player.leftHeld = false;
-
+      } else if (angle < 10) {
+        player.rightHeld = false;
         gameCtx.clearRect(0, 0, game.width, game.height);
         gameCtx.font = "50px Arial white";
         gameCtx.fillStyle = "white";
@@ -165,15 +162,19 @@ function onResults(results) {
         console.log("right stop");
       }
 
-      if (distanceJump < 12) {
-        console.log({ player });
+      if (distanceJump < 12 || (angle < 10 && angle > 0)) {
         player.jumpHeld = true;
+
         gameCtx.clearRect(0, 0, game.width, game.height);
         gameCtx.font = "50px Arial white";
         gameCtx.fillStyle = "blue";
         gameCtx.fillText("jump", 10, 50);
         console.log("jump");
       } else if (distanceJump > 35) {
+        player.jumpHeld = false;
+        /* player.leftHeld = false;
+        player.rightHeld = false; */
+
         gameCtx.clearRect(0, 0, game.width, game.height);
         gameCtx.font = "50px Arial white";
         gameCtx.fillStyle = "red";
@@ -182,6 +183,7 @@ function onResults(results) {
       } else {
         player.jumpHeld = false;
         player.Jump();
+
         gameCtx.clearRect(0, 0, game.width, game.height);
         gameCtx.font = "50px Arial white";
         gameCtx.fillStyle = "white";
