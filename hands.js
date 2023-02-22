@@ -129,14 +129,14 @@ function onResults(results) {
 
       console.log({ distanceJump });
 
-      if (angle < 10) {
+      if (angle < 20) {
         player.leftHeld = true;
         gameCtx.clearRect(0, 0, game.width, game.height);
         gameCtx.font = "50px Arial white";
         gameCtx.fillStyle = "white";
         gameCtx.fillText("left", 10, 50);
-        console.log("left");
-      } else if (angle > 10) {
+        console.log(" moving left");
+      } else if (angle > 20) {
         player.leftHeld = false;
         gameCtx.clearRect(0, 0, game.width, game.height);
         gameCtx.font = "50px Arial white";
@@ -145,15 +145,15 @@ function onResults(results) {
         console.log("left stop");
       }
 
-      if (angle > 10) {
+      if (angle > 20) {
         player.rightHeld = true;
 
         gameCtx.clearRect(0, 0, game.width, game.height);
         gameCtx.font = "50px Arial white";
         gameCtx.fillStyle = "white";
         gameCtx.fillText("right", 10, 50);
-        console.log("right");
-      } else if (angle < 10) {
+        console.log(" moving right");
+      } else if (angle < 20) {
         player.rightHeld = false;
         gameCtx.clearRect(0, 0, game.width, game.height);
         gameCtx.font = "50px Arial white";
@@ -162,14 +162,14 @@ function onResults(results) {
         console.log("right stop");
       }
 
-      if (distanceJump < 12 || (angle < 10 && angle > 0)) {
+      if (distanceJump < 12 || (angle < 20 && angle > -20)) {
         player.jumpHeld = true;
 
         gameCtx.clearRect(0, 0, game.width, game.height);
         gameCtx.font = "50px Arial white";
         gameCtx.fillStyle = "blue";
         gameCtx.fillText("jump", 10, 50);
-        console.log("jump");
+        console.log("jumping");
       } else if (distanceJump > 35) {
         player.jumpHeld = false;
         /* player.leftHeld = false;
@@ -179,17 +179,20 @@ function onResults(results) {
         gameCtx.font = "50px Arial white";
         gameCtx.fillStyle = "red";
         gameCtx.fillText("stay", 10, 70);
-        console.log("stay");
+        console.log("staying");
       } else {
         player.jumpHeld = false;
+
         player.Jump();
+        player.leftHeld = false;
+        player.rightHeld = false;
 
         gameCtx.clearRect(0, 0, game.width, game.height);
         gameCtx.font = "50px Arial white";
         gameCtx.fillStyle = "white";
-        gameCtx.fillText("hold", 10, 90);
+        gameCtx.fillText("holding", 10, 90);
 
-        console.log("hold");
+        console.log("holding");
       }
 
       drawingUtils.drawConnectors(
