@@ -2,6 +2,8 @@ let width = 0;
 let height = 0;
 let canvas = null;
 
+let button = null;
+
 let player = null;
 let lines = [];
 let backgroundImage = null;
@@ -104,6 +106,11 @@ let levelNumber = 0;
 function draw() {
   background(10);
 
+  //add event listener to button
+  /* document.addEventListener("keydown", function (event) {
+    console.log(event);
+  }); */
+
   // if(frameCount % 5==0 ){
   //
   //     levelNumber  = (levelNumber +1)%43;
@@ -202,9 +209,11 @@ function setupCanvas() {
   height = canvas.height - 50;
 }
 
-function keyPressed() {
+function keyPressed(a) {
+  console.log({ a });
   switch (key) {
     case " ":
+      console.log("helding palyer");
       player.jumpHeld = true;
       break;
     case "R":
@@ -219,10 +228,12 @@ function keyPressed() {
   }
 
   switch (keyCode) {
-    case LEFT_ARROW:
+    case LEFT_ARROW || a === "ArrowLeft":
+      console.log("helding palyer left");
       player.leftHeld = true;
       break;
-    case RIGHT_ARROW:
+    case RIGHT_ARROW || a === "ArrowRight":
+      console.log("helding palyer right");
       player.rightHeld = true;
       break;
   }
@@ -230,7 +241,8 @@ function keyPressed() {
 replayingBestPlayer = false;
 cloneOfBestPlayer = null;
 
-function keyReleased() {
+function keyReleased(b) {
+  console.log({ b });
   switch (key) {
     case "B":
       replayingBestPlayer = true;
@@ -243,6 +255,7 @@ function keyReleased() {
     case " ":
       if (!creatingLines) {
         player.jumpHeld = false;
+
         player.Jump();
       }
       break;
@@ -277,10 +290,12 @@ function keyReleased() {
   }
 
   switch (keyCode) {
-    case LEFT_ARROW:
+    case LEFT_ARROW || b === "ArrowLeft":
+      console.log("left release");
       player.leftHeld = false;
       break;
-    case RIGHT_ARROW:
+    case RIGHT_ARROW || b === "ArrowRight":
+      console.log("right release");
       player.rightHeld = false;
       break;
     case DOWN_ARROW:

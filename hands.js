@@ -7,6 +7,13 @@ const controls3d = window;
 const game = document.getElementById("canvas_game");
 const gameCtx = game.getContext("2d");
 
+const gameCanvas = document.getElementById("canvas");
+
+const eventKeyboardLeft = new KeyboardEvent("keydown", { key: "ArrowLeft" });
+const eventKeyboardRight = new KeyboardEvent("keydown", { key: "ArrowRight" });
+//SPACE HOLD FOR 1 SEC
+const eventKeyboardSpace = new KeyboardEvent("keydown", { key: " " });
+
 testSupport([{ client: "Chrome" }]);
 
 // Our input frames will come from here.
@@ -82,40 +89,107 @@ function onResults(results) {
         25,
         25
       );
+
+      canvasCtx.fillStyle = "#FF001A";
+      canvasCtx.fillRect(
+        landmarks[4].x * canvasElement.width,
+        landmarks[4].y * canvasElement.height,
+        25,
+        25
+      );
+      canvasCtx.fillStyle = "#00001A";
+      canvasCtx.fillRect(
+        landmarks[8].x * canvasElement.width,
+        landmarks[8].y * canvasElement.height,
+        25,
+        25
+      );
+
       /*       canvasCtx.save(); */
 
       //calcute distance between two points
-      const x1 = landmarks[0].x * 100;
-      const y1 = landmarks[0].y * 100;
-      const x2 = landmarks[12].x * 100;
-      const y2 = landmarks[12].y * 100;
-      const distance = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
-      console.log(distance);
-      if (distance < 12) {
-        /* document.dispatchEvent(new KeyboardEvent("keydown", { key: "a" })); */
+      const x1Jump = landmarks[0].x * 100;
+      const y1Jump = landmarks[0].y * 100;
+      const x2Jump = landmarks[12].x * 100;
+      const y2Jump = landmarks[12].y * 100;
 
-        let eventKeyboar = new KeyboardEvent("keydown", { key: " " });
-        game.focus();
-        game.dispatchEvent(eventKeyboar);
+      const x1Left = landmarks[4].x * 100;
+      const y1Left = landmarks[4].y * 100;
+      const x2Left = landmarks[8].x * 100;
+      const y2Left = landmarks[8].y * 100;
+
+      const distanceRight = Math.sqrt(
+        (x1Left - x1Left) ** 2 + (x1Jump - y1Jump) ** 2
+      );
+
+      const distanceLeft = Math.sqrt(
+        (x2Left - x1Left) ** 2 + (y2Left - y1Left) ** 2
+      );
+
+      const distanceJump = Math.sqrt(
+        (x2Jump - x1Jump) ** 2 + (y2Jump - y1Jump) ** 2
+      );
+
+      console.log({ distanceRight, distanceLeft, distanceJump });
+
+      if (distanceLeft < 5) {
+        keyReleased(eventKeyboardSpace.key);
+        keyReleased(eventKeyboardLeft.key);
+        keyPressed(eventKeyboardLeft.key);
+        gameCtx.clearRect(0, 0, game.width, game.height);
+        gameCtx.font = "50px Arial white";
+        gameCtx.fillStyle = "white";
+        gameCtx.fillText("left", 10, 50);
+        console.log("left");
+      } else if (distanceLeft > 5) {
+        keyReleased(eventKeyboardLeft.key);
+        gameCtx.clearRect(0, 0, game.width, game.height);
+        gameCtx.font = "50px Arial white";
+        gameCtx.fillStyle = "white";
+        gameCtx.fillText("left", 10, 50);
+        console.log("left stop");
+      }
+
+      if (distanceRight < 5) {
+        keyReleased(eventKeyboardSpace.key);
+        keyReleased(eventKeyboardLeft.key);
+        keyPressed(eventKeyboardRight.key);
+        gameCtx.clearRect(0, 0, game.width, game.height);
+        gameCtx.font = "50px Arial white";
+        gameCtx.fillStyle = "white";
+        gameCtx.fillText("right", 10, 50);
+        console.log("right");
+      } else if (distanceRight > 5) {
+        keyReleased(eventKeyboardSpace.key);
+        keyReleased(eventKeyboardLeft.key);
+        keyReleased(eventKeyboardRight.key);
+        gameCtx.clearRect(0, 0, game.width, game.height);
+        gameCtx.font = "50px Arial white";
+        gameCtx.fillStyle = "white";
+        gameCtx.fillText("right", 10, 50);
+        console.log("right stop");
+      }
+
+      if (distanceJump < 12) {
+        keyReleased(eventKeyboardSpace.key);
+        keyReleased(eventKeyboardLeft.key);
+        keyReleased(eventKeyboardRight.key);
+
         gameCtx.clearRect(0, 0, game.width, game.height);
         gameCtx.font = "50px Arial white";
         gameCtx.fillStyle = "blue";
         gameCtx.fillText("jump", 10, 50);
-
         console.log("jump");
-      } else if (distance > 35) {
-        game.focus();
+      } else if (distanceJump > 35) {
         gameCtx.clearRect(0, 0, game.width, game.height);
         gameCtx.font = "50px Arial white";
         gameCtx.fillStyle = "red";
         gameCtx.fillText("stay", 10, 70);
-
-        let eventKeyboar = new KeyboardEvent("keyup", { keyCode: 65 });
-        game.dispatchEvent(eventKeyboar);
-
         console.log("stay");
       } else {
-        game.focus();
+        keyReleased(eventKeyboardLeft.key);
+        keyReleased(eventKeyboardRight.key);
+        keyPressed(eventKeyboardSpace.key);
         gameCtx.clearRect(0, 0, game.width, game.height);
         gameCtx.font = "50px Arial white";
         gameCtx.fillStyle = "white";
