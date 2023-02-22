@@ -17,13 +17,13 @@ let run2Image = null;
 let run3Image = null;
 let fallenImage = null;
 let fallImage = null;
-let showingLines = false;
-let showingCoins = false;
+let showingLines = true;
+let showingCoins = true;
 let levelImages = [];
 
 let placingPlayer = false;
-let placingCoins = false;
-let playerPlaced = false;
+let placingCoins = true;
+let playerPlaced = true;
 
 let testingSinglePlayer = true;
 
@@ -35,11 +35,11 @@ let landSound = null;
 let snowImage = null;
 
 let population = null;
-let levelDrawn = false;
+let levelDrawn = true;
 
 let startingPlayerActions = 5;
-let increaseActionsByAmount = 5;
-let increaseActionsEveryXGenerations = 10;
+let increaseActionsByAmount = 10;
+let increaseActionsEveryXGenerations = 20;
 let evolationSpeed = 1;
 
 function preload() {
@@ -56,7 +56,7 @@ function preload() {
 
   snowImage = loadImage("images/snow3.png");
 
-  for (let i = 1; i <= 43; i++) {
+  for (let i = 1; i <= 10; i++) {
     levelImages.push(loadImage("images/levelImages/" + i + ".png"));
   }
 
@@ -219,10 +219,10 @@ function keyPressed() {
   }
 
   switch (keyCode) {
-    case 65:
+    case LEFT_ARROW:
       player.leftHeld = true;
       break;
-    case 68:
+    case RIGHT_ARROW:
       player.rightHeld = true;
       break;
   }
@@ -254,7 +254,6 @@ function keyReleased() {
         mousePos2 = null;
       }
       break;
-
     case "N":
       if (creatingLines) {
         levelNumber += 1;
@@ -278,10 +277,10 @@ function keyReleased() {
   }
 
   switch (keyCode) {
-    case 65:
+    case LEFT_ARROW:
       player.leftHeld = false;
       break;
-    case 68:
+    case RIGHT_ARROW:
       player.rightHeld = false;
       break;
     case DOWN_ARROW:
