@@ -157,6 +157,7 @@ class Player {
         this.hasBumped = false;
         this.isRunning = false;
         this.isSlidding = false;
+    
         this.currentRunIndex = 1;
         this.runCycle = [run1Image, run1Image, run1Image, run1Image, run1Image, run1Image, run1Image, run1Image, run1Image, run1Image, run1Image, run1Image, run1Image, run2Image, run2Image, run2Image, run2Image, run2Image, run2Image, run3Image, run3Image, run3Image, run3Image, run3Image, run3Image, run3Image, run3Image, run3Image, run3Image, run3Image, run3Image, run3Image, run2Image, run2Image, run2Image, run2Image, run2Image, run2Image]
         this.sliddingRight = false;
@@ -680,11 +681,11 @@ class Player {
 
     }
 
-    Jump() {
+    Jump(time) {
         if (!this.isOnGround) {
             return;
         }
-
+        this.jumpTimer = time;
         let verticalJumpSpeed = map(this.jumpTimer, 0, maxJumpTimer, minJumpSpeed, maxJumpSpeed)
         // print(this.jumpTimer,minJumpSpeed,maxJumpSpeed,verticalJumpSpeed )
         if (this.leftHeld) {
@@ -778,6 +779,7 @@ class Player {
 
     UpdateJumpTimer() {
         if (this.isOnGround && this.jumpHeld && this.jumpTimer < maxJumpTimer) {
+         
             this.jumpTimer += 1
         }
     }
