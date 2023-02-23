@@ -3,6 +3,7 @@ import { testSupport } from "./testSupport.js";
 const mpHands = window;
 const drawingUtils = window;
 const controls = window;
+var salto = 0;
 const controls3d = window;
 const game = document.getElementById("canvas_game");
 const gameCtx = game.getContext("2d");
@@ -120,7 +121,7 @@ function onResults(results) {
 
       //calculate angle between two points x1,y1 and x2,y2
       const angle =
-        (Math.atan2(y1Left - y1Jump, x1Left - x1Jump) * 180) / Math.PI;
+        ((Math.atan2(y1Left - y1Jump, x1Left - x1Jump) * 180) / Math.PI) * -1;
       console.log({ angle });
 
       const distanceJump = Math.sqrt(
@@ -144,8 +145,23 @@ function onResults(results) {
         gameCtx.fillText("left", 10, 50);
         console.log("left stop");
       }
+      if (angle > 120 && angle < 180) {
+        player.leftHeld = true;
+        gameCtx.clearRect(0, 0, game.width, game.height);
+        gameCtx.font = "50px Arial white";
+        gameCtx.fillStyle = "white";
+        gameCtx.fillText("left", 10, 50);
+        console.log(" moving left");
+      } else if (angle > 60 && angle < 120) {
+        player.leftHeld = false;
+        gameCtx.clearRect(0, 0, game.width, game.height);
+        gameCtx.font = "50px Arial white";
+        gameCtx.fillStyle = "white";
+        gameCtx.fillText("left", 10, 50);
+        console.log("left stop");
+      }
 
-      if (angle > 20) {
+      if (angle > 0 && angle < 60) {
         player.rightHeld = true;
 
         gameCtx.clearRect(0, 0, game.width, game.height);
@@ -153,7 +169,7 @@ function onResults(results) {
         gameCtx.fillStyle = "white";
         gameCtx.fillText("right", 10, 50);
         console.log(" moving right");
-      } else if (angle < 20) {
+      } else if (angle > 60 && angle < 120) {
         player.rightHeld = false;
         gameCtx.clearRect(0, 0, game.width, game.height);
         gameCtx.font = "50px Arial white";
@@ -162,38 +178,23 @@ function onResults(results) {
         console.log("right stop");
       }
 
-      if (distanceJump < 12 || (angle < 20 && angle > -20)) {
-        player.jumpHeld = true;
-
-        gameCtx.clearRect(0, 0, game.width, game.height);
-        gameCtx.font = "50px Arial white";
-        gameCtx.fillStyle = "blue";
-        gameCtx.fillText("jump", 10, 50);
-        console.log("jumping");
-      } else if (distanceJump > 35) {
-        player.jumpHeld = false;
-        /* player.leftHeld = false;
-        player.rightHeld = false; */
-
-        gameCtx.clearRect(0, 0, game.width, game.height);
-        gameCtx.font = "50px Arial white";
-        gameCtx.fillStyle = "red";
-        gameCtx.fillText("stay", 10, 70);
-        console.log("staying");
-      } else {
-        player.jumpHeld = false;
-
+      if (distanceJump < 30 && salto === 1) {
+        player.jumpHeld;
         player.Jump();
-        player.leftHeld = false;
-        player.rightHeld = false;
-
-        gameCtx.clearRect(0, 0, game.width, game.height);
-        gameCtx.font = "50px Arial white";
-        gameCtx.fillStyle = "white";
-        gameCtx.fillText("holding", 10, 90);
-
-        console.log("holding");
+        salto = 0;
       }
+
+      if (distanceJump > 30) {
+        salto = 1;
+      }
+
+      gameCtx.font = "50px Arial white";
+      gameCtx.fillStyle = "white";
+      gameCtx.fillText(angle, 100, 50);
+
+      gameCtx.font = "50px Arial white";
+      gameCtx.fillStyle = "white";
+      gameCtx.fillText(distanceJump, 200, 70);
 
       drawingUtils.drawConnectors(
         canvasCtx,
