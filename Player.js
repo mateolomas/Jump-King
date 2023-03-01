@@ -1054,7 +1054,7 @@ class Player {
                             if (this.IsMovingDown()) {
                                 playerCornerPos.y += this.height;
                             }
-                            if (this.IsMovingRight()) {
+                            if (tcurrentLevelhis.IsMovingRight()) {
                                 playerCornerPos.x += this.width;
                             }
                         }
@@ -1132,8 +1132,9 @@ class Player {
                 this.playersDead = true;
                 this.hasFinishedInstructions = true;
             }
-            this.currentLevelNo -= 1;
+            this.currentLevelNo = this.bestLevelReached;
             this.currentPos.y -= height;
+            this.currentPos.x = Math.random() * 1000 + 100;
 
             if (!this.hasFinishedInstructions && this.currentLevelNo < this.bestLevelReached - 1) {
                 this.fellToPreviousLevel = true;
