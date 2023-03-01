@@ -157,6 +157,7 @@ class Player {
         this.hasBumped = false;
         this.isRunning = false;
         this.isSlidding = false;
+    
         this.currentRunIndex = 1;
         this.runCycle = [run1Image, run1Image, run1Image, run1Image, run1Image, run1Image, run1Image, run1Image, run1Image, run1Image, run1Image, run1Image, run1Image, run2Image, run2Image, run2Image, run2Image, run2Image, run2Image, run3Image, run3Image, run3Image, run3Image, run3Image, run3Image, run3Image, run3Image, run3Image, run3Image, run3Image, run3Image, run3Image, run2Image, run2Image, run2Image, run2Image, run2Image, run2Image]
         this.sliddingRight = false;
@@ -680,11 +681,11 @@ class Player {
 
     }
 
-    Jump() {
+    Jump(time) {
         if (!this.isOnGround) {
             return;
         }
-
+        this.jumpTimer = time;
         let verticalJumpSpeed = map(this.jumpTimer, 0, maxJumpTimer, minJumpSpeed, maxJumpSpeed)
         // print(this.jumpTimer,minJumpSpeed,maxJumpSpeed,verticalJumpSpeed )
         if (this.leftHeld) {
@@ -778,6 +779,7 @@ class Player {
 
     UpdateJumpTimer() {
         if (this.isOnGround && this.jumpHeld && this.jumpTimer < maxJumpTimer) {
+         
             this.jumpTimer += 1
         }
     }
@@ -1052,7 +1054,7 @@ class Player {
                             if (this.IsMovingDown()) {
                                 playerCornerPos.y += this.height;
                             }
-                            if (this.IsMovingRight()) {
+                            if (tcurrentLevelhis.IsMovingRight()) {
                                 playerCornerPos.x += this.width;
                             }
                         }
@@ -1130,8 +1132,9 @@ class Player {
                 this.playersDead = true;
                 this.hasFinishedInstructions = true;
             }
-            this.currentLevelNo -= 1;
+            this.currentLevelNo = this.bestLevelReached;
             this.currentPos.y -= height;
+            this.currentPos.x = Math.random() * 1000 + 100;
 
             if (!this.hasFinishedInstructions && this.currentLevelNo < this.bestLevelReached - 1) {
                 this.fellToPreviousLevel = true;

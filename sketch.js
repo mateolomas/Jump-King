@@ -19,8 +19,8 @@ let run2Image = null;
 let run3Image = null;
 let fallenImage = null;
 let fallImage = null;
-let showingLines = true;
-let showingCoins = true;
+let showingLines =true;
+let showingCoins = false;
 let levelImages = [];
 
 let placingPlayer = false;
@@ -58,7 +58,7 @@ function preload() {
 
   snowImage = loadImage("images/snow3.png");
 
-  for (let i = 1; i <= 10; i++) {
+  for (let i = 1; i <= 16; i++) {
     levelImages.push(loadImage("images/levelImages/" + i + ".png"));
   }
 
