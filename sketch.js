@@ -19,7 +19,7 @@ let run2Image = null;
 let run3Image = null;
 let fallenImage = null;
 let fallImage = null;
-let showingLines =true;
+let showingLines = true;
 let showingCoins = false;
 let levelImages = [];
 
